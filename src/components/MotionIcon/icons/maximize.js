@@ -1,0 +1,62 @@
+/* eslint-disable */
+// maximize — from lucide-animated (https://github.com/pqoqubbw/icons), MIT License.
+import { motion, useAnimation } from "motion/react";
+import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import cn from "components/MotionIcon/cn";
+const DEFAULT_TRANSITION = {
+    type: "spring",
+    stiffness: 250,
+    damping: 25,
+};
+const MaximizeIcon = forwardRef(({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
+    const controls = useAnimation();
+    const isControlledRef = useRef(false);
+    useImperativeHandle(ref, () => {
+        isControlledRef.current = true;
+        return {
+            startAnimation: () => controls.start("animate"),
+            stopAnimation: () => controls.start("normal"),
+        };
+    });
+    const handleMouseEnter = useCallback((e) => {
+        if (isControlledRef.current) {
+            onMouseEnter === null || onMouseEnter === void 0 ? void 0 : onMouseEnter(e);
+        }
+        else {
+            controls.start("animate");
+        }
+    }, [controls, onMouseEnter]);
+    const handleMouseLeave = useCallback((e) => {
+        if (isControlledRef.current) {
+            onMouseLeave === null || onMouseLeave === void 0 ? void 0 : onMouseLeave(e);
+        }
+        else {
+            controls.start("normal");
+        }
+    }, [controls, onMouseLeave]);
+    return (<div className={cn(className)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} {...props}>
+        <svg fill="none" height={size} stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" width={size} xmlns="http://www.w3.org/2000/svg">
+          <motion.path animate={controls} d="M8 3H5a2 2 0 0 0-2 2v3" transition={DEFAULT_TRANSITION} variants={{
+            normal: { translateX: "0%", translateY: "0%" },
+            animate: { translateX: "-2px", translateY: "-2px" },
+        }}/>
+
+          <motion.path animate={controls} d="M21 8V5a2 2 0 0 0-2-2h-3" transition={DEFAULT_TRANSITION} variants={{
+            normal: { translateX: "0%", translateY: "0%" },
+            animate: { translateX: "2px", translateY: "-2px" },
+        }}/>
+
+          <motion.path animate={controls} d="M3 16v3a2 2 0 0 0 2 2h3" transition={DEFAULT_TRANSITION} variants={{
+            normal: { translateX: "0%", translateY: "0%" },
+            animate: { translateX: "-2px", translateY: "2px" },
+        }}/>
+
+          <motion.path animate={controls} d="M16 21h3a2 2 0 0 0 2-2v-3" transition={DEFAULT_TRANSITION} variants={{
+            normal: { translateX: "0%", translateY: "0%" },
+            animate: { translateX: "2px", translateY: "2px" },
+        }}/>
+        </svg>
+      </div>);
+});
+MaximizeIcon.displayName = "MaximizeIcon";
+export { MaximizeIcon };
